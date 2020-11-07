@@ -819,6 +819,13 @@ void PersistentAggregateAggregatePair::findOverlaps(PairArray& pairs, const PxBo
 #endif
 	)
 {
+	if(!mAggregate0->getNbAggregated() || !mAggregate1->getNbAggregated())
+		return;
+
+	if((groups[mAggregate0->getAggregated(0)] & 3) == Bp::FilterGroup::eSTATICS &&
+		(groups[mAggregate1->getAggregated(0)] & 3) == Bp::FilterGroup::eSTATICS)
+		return;
+
 	mAggregate0->getSortedMinBounds();
 	mAggregate1->getSortedMinBounds();
 	doBipartiteBoxPruning_Leaf(&pairs, lut, mAggregate0, mAggregate1, groups);
