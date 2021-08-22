@@ -720,11 +720,6 @@ bool NpSceneQueries::multiQuery(
 	PxU32 cachedCompoundId = INVALID_PRUNERHANDLE;
 	const PrunerData cacheData = cache ? NpActor::getShapeManager(*cache->actor)->findSceneQueryData(*static_cast<NpShape*>(cache->shape), cachedCompoundId) : SQ_INVALID_PRUNER_DATA;
 
-	// this function is logically const for the SDK user, as flushUpdates() will not have an API-visible effect on this object
-	// internally however, flushUpdates() changes the states of the Pruners in mSQManager
-	// because here is the only place we need this, const_cast instead of making SQM mutable
-	const_cast<NpSceneQueries*>(this)->mSQManager.flushUpdates();
-
 #if PX_SUPPORT_PVD
 	CapturePvdOnReturn<HitType> pvdCapture(this, input, hitFlags, cache, filterData, filterCall, bfd, hits);
 #endif
